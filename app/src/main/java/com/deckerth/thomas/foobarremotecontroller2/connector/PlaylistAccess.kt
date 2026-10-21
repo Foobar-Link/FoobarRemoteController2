@@ -8,6 +8,7 @@ import com.deckerth.thomas.foobarremotecontroller2.model.PlaylistEntity
 import com.deckerth.thomas.foobarremotecontroller2.model.Playlists
 import com.deckerth.thomas.foobarremotecontroller2.model.Title
 import com.deckerth.thomas.foobarremotecontroller2.viewmodel.AppViewModel
+import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
 import java.io.UnsupportedEncodingException
@@ -151,7 +152,7 @@ class PlaylistAccess(private val vm: AppViewModel) {
                 val track = columnsArray.getString(10)
                 val length = columnsArray.getString(11)
                 val duration = columnsArray.getString(12)
-                val path = ""
+                val path = columnsArray.getString(13)
 
                 // For a SHOUTcast stream which contains metadata,
                 // it is the StreamTitle after the first "-" character.
@@ -254,37 +255,21 @@ class PlaylistAccess(private val vm: AppViewModel) {
         paths: List<String>,
         addBehavior: AddTracksBehaviors
     ) {
-//        {
-//            "items": [
-//            "T:\\Music\\Alpha\\Alpha 634"
-//             ],
-//            "play": true
-//        }
-        //val playValue: String?
         val playValue = when (addBehavior) {
-            AddTracksBehaviors.ADD_BEHAVIOR_ADD -> {
-                "false"
-            }
-
-            AddTracksBehaviors.ADD_BEHAVIOR_ADD_PLAY -> {
-                "false"
-            }
-
-            AddTracksBehaviors.ADD_BEHAVIOR_REPLACE_PLAY -> {
-                "true"
-            }
+            AddTracksBehaviors.ADD_BEHAVIOR_ADD -> false
+            AddTracksBehaviors.ADD_BEHAVIOR_ADD_PLAY -> false
+            AddTracksBehaviors.ADD_BEHAVIOR_REPLACE_PLAY -> true
         }
-        var pos = 0
-        val pathString = StringBuilder()
+        val json = JSONObject()
+        val itemsArray = JSONArray()
         for (path in paths) {
-            pathString.append("\"").append(path).append("\"")
-            if (pos < paths.size - 1)  // 0, 1 : indexes.size() = 2
-                pathString.append(", ")
-            pos++
+            itemsArray.put(path)
         }
-        val jsonString =
-            "{\"items\":[ $pathString], \"play\":$playValue, \"replace\":$playValue }"
-        vm.connector.postData("playlists/$playlistId/items/add/", jsonString, vm)
+        json.put("items", itemsArray)
+        json.put("play", playValue)
+        json.put("replace", playValue)
+
+        vm.connector.postData("playlists/$playlistId/items/add", json.toString(), vm)
     }
 
     fun removeTitles(playlistId: String, indexes: List<Int>) {
