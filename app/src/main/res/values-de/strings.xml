@@ -181,10 +181,10 @@
     <!--    <string name="release_notes_1_text">Sie können das Beefweb plugin so konfigurieren, dass Zugangsdaten eingegeben werden müssen. Sobald Foobar Link erkennt, dass Zugangsdaten benötigt werden, wird der Nutzer aufgefordert, einen Benutzernamen und ein Passwort einzugeben. Foobar Link speichert die Zugangsdaten für jede IP-Adresse, unter der ein Foobar-Server läuft.</string>-->
     <!--    <string name="release_notes_2_header">Editieren von Playlists</string>-->
     <!--    <string name="release_notes_2_text">Wenn Sie eine neue Playlist aus der aktuellen erstellen oder ausgewählte Titel in eine andere Playlist kopieren, können Sie nun einfach alle Titel auswählen oder abwählen.</string>-->
-    <string name="release_notes_1_header">Zusätzliche Felder</string>
-    <string name="release_notes_1_text">Zusätzlich zu den Standard Track Informationen unterstützt foobar Link jetzt auch benutzerdefinierte Felder.</string>
-    <string name="release_notes_2_header">Detailsicht</string>
-    <string name="release_notes_2_text">Diese werden in der Detailansicht angezeigt, beim Filtern berücksichtigt und können in benutzerdefinierten Layouts verwendet werden.</string>
+    <string name="release_notes_1_header">Cover-Anzeige mit Zoomfunktion</string>
+    <string name="release_notes_1_text">In der Player-Ansicht können Sie durch Antippen des Covers das Cover im Vollbildmodus anzeigen. Jetzt können Sie auch es auch vergrößern.</string>
+    <string name="release_notes_2_header">Mit foobar synchronisieren</string>
+    <string name="release_notes_2_text">Ebenfalls in der Player-Ansicht können Sie durch eine Zieh-Geste Foobar Link und foobar wieder synchronisieren, sollte Foobar Link einmal aus dem Takt kommen.</string>
     <string name="release_notes_remark">Sie können sich die Informationen über die Neuigkeiten später in den Einstellungen ansehen.</string>
     <string name="release_notes_version">Version: %1$s</string>
     <string name="menu_item_top_of_playlist">Zum Anfang springen</string>

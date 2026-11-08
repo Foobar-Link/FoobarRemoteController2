@@ -51,6 +51,7 @@ import com.deckerth.thomas.foobarremotecontroller2.ui.components.LayoutComponent
 import com.deckerth.thomas.foobarremotecontroller2.ui.components.ReleaseNotes
 import com.deckerth.thomas.foobarremotecontroller2.ui.components.TitleDetails
 import com.deckerth.thomas.foobarremotecontroller2.ui.components.UserPasswordDialog
+import com.deckerth.thomas.foobarremotecontroller2.ui.components.ZoomableBox
 import com.deckerth.thomas.foobarremotecontroller2.ui.isTablet
 import com.deckerth.thomas.foobarremotecontroller2.ui.layout.StandardLayoutItems
 import com.deckerth.thomas.foobarremotecontroller2.ui.layout.layoutManager
@@ -371,11 +372,15 @@ fun PlayerCard(
                     Box(
                         modifier = Modifier
                             .fillMaxSize()
-                            .background(colors.background)
-                            .clickable { showCoverFullscreen = false },
+                            .background(colors.background),
                         contentAlignment = Alignment.Center
                     ) {
-                        ArtWork(playerViewModel, previewMode = previewMode, vm)
+                        ZoomableBox(
+                            modifier = Modifier.fillMaxSize(),
+                            onDismissRequest = { showCoverFullscreen = false }
+                        ) {
+                            ArtWork(playerViewModel, previewMode, vm)
+                        }
                     }
                 }
             }
