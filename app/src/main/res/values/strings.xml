@@ -180,10 +180,10 @@
 <!--    <string name="release_notes_1_text">The Beefweb plugin can now be configured to require credentials. When Foobar Link detects that authentication is needed, it prompts the user to enter a username and password. These credentials are then stored by Foobar Link for each IP address running Foobar.</string>-->
 <!--    <string name="release_notes_2_header">Playlist Editing</string>-->
 <!--    <string name="release_notes_2_text">When creating a new playlist from the current one or copying selected tracks to another playlist, you can now quickly select or deselect all titles with ease.</string>-->
-    <string name="release_notes_1_header">Custom fields</string>
-    <string name="release_notes_1_text">In addition to the standard track information, foobar Link now supports custom fields.</string>
-    <string name="release_notes_2_header">Title Details</string>
-    <string name="release_notes_2_text">"These fields are automatically transferred to the app, shown in the detail view, included when filtering, and can be used in custom layouts. "</string>
+    <string name="release_notes_1_header">Zoomable Cover</string>
+    <string name="release_notes_1_text">In the player view, you can tap the cover to display it in full screen. Now, you can also pinch to zoom.</string>
+    <string name="release_notes_2_header">Synchronize with foobar</string>
+    <string name="release_notes_2_text">Also in the player view, you can swipe to resynchronize Foobar Link and foobar if they ever get out of sync.</string>
     <string name="release_notes_remark">You can review the release notes later in the app settings.</string>
     <string name="release_notes_version">Version: %1$s</string>
     <string name="menu_item_top_of_playlist">Go to top</string>
