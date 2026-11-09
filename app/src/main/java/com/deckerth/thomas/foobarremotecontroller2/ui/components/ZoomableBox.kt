@@ -44,7 +44,7 @@ fun ZoomableBox(
                     },
                     onTap = {
                         // Single tap closes overlay if not zoomed in
-                        if (scale == 1f && onDismissRequest != null) {
+                        if (onDismissRequest != null) {
                             onDismissRequest()
                         }
                     }
