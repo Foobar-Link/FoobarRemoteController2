@@ -56,6 +56,9 @@ class PlayerViewModel : ViewModel() {
     var ipAddress by mutableStateOf("")
     var invalidCredentials by mutableStateOf(false)
 
+    var isDragging by mutableStateOf(false)
+    var dragPositionText by mutableStateOf("")
+
     var lastKnownPosition by mutableStateOf("")
     var lastKnownPlaybackTime by mutableStateOf("")
     var lastUpdateTimestamp by mutableLongStateOf(0L)
@@ -222,7 +225,7 @@ class PlayerViewModel : ViewModel() {
 
     fun getNiceTrack():String{
         return if (discNumber.isNotBlank() && discNumber != "?")
-            "$discNumber:$track"
+            "$discNumber.$track"
         else track
     }
 }
