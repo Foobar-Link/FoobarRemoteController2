@@ -23,6 +23,7 @@ import androidx.compose.material3.Slider
 import androidx.compose.material3.SliderDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
@@ -30,8 +31,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.BiasAlignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -51,14 +54,28 @@ fun PlayerProgress(vm: AppViewModel, playerViewModel: PlayerViewModel) {
         interactionSource.interactions.collect { interaction ->
             when (interaction) {
                 is PressInteraction.Press -> isDragging = true
-                is PressInteraction.Release -> isDragging = false
-                is PressInteraction.Cancel -> isDragging = false
                 is FocusInteraction.Focus -> isDragging = true
-                is FocusInteraction.Unfocus -> isDragging = false
                 is DragInteraction.Start -> isDragging = true
                 is DragInteraction.Stop -> isDragging = false
                 is DragInteraction.Cancel -> isDragging = false
+                is FocusInteraction.Unfocus -> isDragging = false
             }
+        }
+    }
+
+    LaunchedEffect(isDragging, sliderValue) {
+        playerViewModel.isDragging = isDragging
+        if (isDragging) {
+            playerViewModel.dragPositionText = playerViewModel.getNicePosition(sliderValue)
+        } else {
+            playerViewModel.dragPositionText = ""
+        }
+    }
+
+    DisposableEffect(Unit) {
+        onDispose {
+            playerViewModel.isDragging = false
+            playerViewModel.dragPositionText = ""
         }
     }
 
@@ -67,31 +84,50 @@ fun PlayerProgress(vm: AppViewModel, playerViewModel: PlayerViewModel) {
     Spacer(modifier = Modifier.height(8.dp))
 
     Column {
-        Box {
-            val displayedPlaybackTime = if (isDragging)
-                playerViewModel.getNicePosition(sliderValue)
-            else
-                playerViewModel.playbackTime
-
+        Box(modifier = Modifier.fillMaxWidth()) {
             Text(
-                modifier = Modifier
-                    .fillMaxWidth(),
-                text = displayedPlaybackTime,
+                modifier = Modifier.align(Alignment.CenterStart),
+                text = playerViewModel.playbackTime,
                 style = MaterialTheme.typography.labelSmall
             )
             Text(
                 textAlign = TextAlign.Right,
-                modifier = Modifier
-                    .fillMaxWidth(),
+                modifier = Modifier.align(Alignment.CenterEnd),
                 text = playerViewModel.getNiceDuration(),
                 style = MaterialTheme.typography.labelSmall
             )
+
+            if (isDragging) {
+                val fraction = sliderValue.coerceIn(0f, 1f)
+                val dragText = playerViewModel.getNicePosition(sliderValue)
+                if (dragText.isNotEmpty()) {
+                    Text(
+                        text = dragText,
+                        style = MaterialTheme.typography.labelSmall,
+                        color = MaterialTheme.colorScheme.onPrimaryContainer,
+                        fontWeight = FontWeight.Bold,
+                        modifier = Modifier
+                            .align(BiasAlignment((fraction * 2f) - 1f, 0f))
+                            .background(
+                                color = MaterialTheme.colorScheme.primaryContainer,
+                                shape = CircleShape
+                            )
+                            .padding(horizontal = 6.dp, vertical = 2.dp)
+                    )
+                }
+            }
         }
         Spacer(modifier = Modifier.height(2.dp))
         Slider(
             value = sliderValue,
-            onValueChange = { newPosition -> sliderValue = newPosition },
-            onValueChangeFinished = { playerViewModel.setPos(vm, sliderValue) },
+            onValueChange = { newPosition ->
+                isDragging = true
+                sliderValue = newPosition
+            },
+            onValueChangeFinished = {
+                isDragging = false
+                playerViewModel.setPos(vm, sliderValue)
+            },
             interactionSource = interactionSource,
             modifier = Modifier
                 .fillMaxWidth(),
